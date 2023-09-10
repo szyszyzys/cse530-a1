@@ -62,8 +62,9 @@ int main(int argc, char* argv[]) {
     }
 
     // Scatter the data samples into the matrix
+    parsec_roi_begin()
     scatter(mat, indices, data);
-
+    parsec_roi_end()
 
     return 0;
 }

@@ -53,9 +53,9 @@ int main(int argc, char* argv[]) {
     }
 
     // Gather the data from the matrix using the indices
-    parsec_roi_begin()
+    parsec_roi_begin();
     std::vector<int> gatheredData = gather(mat, indices);
-    parsec_roi_end()
+    parsec_roi_end();
 
     return 0;
 }

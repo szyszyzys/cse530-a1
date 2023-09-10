@@ -2,7 +2,6 @@
 #include <vector>
 #include <cstdlib> // for rand()
 #include <ctime> // for time()
-typedef std::vector<std::vector<int>> Matrix;
 
 void parsec_roi_begin()
 {
@@ -15,17 +14,18 @@ void parsec_roi_end()
 }
 
 
-typedef std::vector<std::vector<double>> Matrix;
+typedef std::vector<std::vector<int>> Matrix;
 
-Matrix generateRandomMatrix(int rows, int cols, double max_val = 1.0) {
-    Matrix mat(rows, std::vector<double>(cols));
+Matrix generateRandomMatrix(int rows, int cols) {
+    Matrix matrix(rows, std::vector<int>(cols, 0));
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            mat[i][j] = ((double)rand() / RAND_MAX) * max_val;
+            matrix[i][j] = rand() % 256;
         }
     }
-    return mat;
+    return matrix;
 }
+
 
 Matrix convolution(const Matrix &input, const Matrix &kernel) {
     int inputRows = input.size();
@@ -35,14 +35,14 @@ Matrix convolution(const Matrix &input, const Matrix &kernel) {
 
     int outputRows = inputRows;
     int outputCols = inputCols;
-    Matrix output(outputRows, std::vector<double>(outputCols, 0.0));
+    Matrix output(outputRows, std::vector<int>(outputCols, 0));
 
     int padRow = kernelRows / 2;
     int padCol = kernelCols / 2;
 
     for (int i = 0; i < outputRows; ++i) {
         for (int j = 0; j < outputCols; ++j) {
-            double sum = 0.0;
+            int sum = 0;
             for (int m = -padRow; m <= padRow; ++m) {
                 for (int n = -padCol; n <= padCol; ++n) {
                     if (i + m >= 0 && i + m < inputRows && j + n >= 0 && j + n < inputCols) {
