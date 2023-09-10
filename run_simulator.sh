@@ -1,18 +1,15 @@
 #!/bin/sh
 # Run Simulator on input traces 
 
-input_file=${1:-'traces/'}   #Pass absolute path
-cd Simulator/src/
+trace_file=${1:-'./traces/'}
 
-for entry in $input_file/*.out
+for trace in $trace_file/*.out
 do
-  f=$(echo "${entry##*/}");
+  f=$(echo "${trace##*/}");
   tracename=$(echo $f| cut  -d'.' -f 1);
   echo $tracename	
   filename="${tracename}_stats.out"
   echo "Running $tracename on simulator"
-  time ./cache_simulator.py -pdc ../config/config_simple_multilevel -t $entry | tee stats.txt
-  mv cache_simulator.log $filename  
+  time ./Simulator/src/cache_simulator.py -pdc ../config/config_simple_multilevel -t $trace | tee stats.txt
+  mv ./Simulator/src/cache_simulator.log $filename
 done
-cp *.out $input_file/
-cd -
