@@ -26,16 +26,17 @@ for task in bin/*.o
 do
   f=$(echo "${task##*/}");
   task_name=$(echo $f| cut  -d'.' -f 1);
-  trace_name="${task_name}_traces.out"
   if [[ $task_name = "convolution" ]];
   then
+  trace_name="${task_name}_traces_seed_{$seed}_kernal_{$kernal_size}.out"
 	echo "start convolution"
   	time $PIN_ROOT/pin -t $PIN_ROOT/source/tools/ManualExamples/obj-intel64/pinatrace.so -- $task $seed $kernal_size
   else
-	echo "start scatter/gather"
+  trace_name="${task_name}_traces_seed_{$seed}.out"
+	echo "start ${task_name}"
   	time $PIN_ROOT/pin -t $PIN_ROOT/source/tools/ManualExamples/obj-intel64/pinatrace.so -- $task $seed
   fi
-  head -n 50 pinatrace.out
+  head -n 10 pinatrace.out
   mv pinatrace.out traces/$trace_name
 done
 
