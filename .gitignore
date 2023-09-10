@@ -1,2 +1,4 @@
 ./traces/*
 *.o
+*.in
+*.out
