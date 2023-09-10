@@ -8,9 +8,6 @@ sparsity=${3:-'50'}
 input_file=${4:-'input_matrix.in'}
 input_file_convol=${5:-'input_matrix_convolution.in'}
 build_type=${6:-'normal'}
-python utils/random_matrix_generator.py --n1 $size1 --n2 $size1 --dump $input_file --sparsity $sparsity
-
-python utils/random_matrix_generator.py --n1 $size1 --n2 $size2 --dump $input_file_convol --sparsity $sparsity
 
 if [[ $build_type = "clean" ]];
 then
@@ -24,15 +21,15 @@ fi
 mkdir -p bin/
 mkdir -p traces/
 
-echo Compiling Matmul_boostlib
+echo Compiling convolution
 g++ -Wall src/convolution.cpp -o bin/convolution.o
 #g++ -std=c++98 -Wall -O3 -g src/matmul_boostlib.cpp -o bin/matmul_boostlib.o -pedantic
 
-echo Compiling Matmul_strassenalgo
+echo Compiling gather
 g++ -Wall src/gather.cpp -o bin/gather.o
 #g++ -std=c++98 -Wall -O3 -g src/matmul_strassenalgo.cpp -o bin/matmul_strassenalgo.o -pedantic
 
-echo Compiling Matmul_ikjalgo
+echo Compiling scatter
 g++ -Wall src/scatter.cpp -o bin/scatter.o
 
 for entry in bin/*.o
@@ -50,9 +47,11 @@ do
   else
 	echo "Passing matrix in dense fmt"
   	echo "Running $kernelname on $input_file"
-  	time $PIN_ROOT/pin -t $PIN_ROOT/source/tools/ManualExamples/obj-intel64/pinatrace.so -- $entry --input_file $input_file
+    csrA="csrA_${input_file_conv  ol}"
+    csrB="csrB_${input_file_convol}"
+  	time $PIN_ROOT/pin -t $PIN_ROOT/source/tools/ManualExamples/obj-intel64/pinatrace.so -- $entry $csrA $csrB
   fi
-  head pinatrace.out  
+  head -n 50 pinatrace.out
   mv pinatrace.out traces/$filename  
 done
 
