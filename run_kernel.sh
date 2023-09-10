@@ -1,13 +1,11 @@
 #!/bin/sh
 # Compile, Run and extract trace from matmul kernel
 
-export PIN_ROOT=/home/mdl/azk6085/CSE530/pin-3.18-98332-gaebd7b1e6-gcc-linux/
-size1=${1:-'10'}
-size2=${2:-'10'}
-sparsity=${3:-'50'}
-input_file=${4:-'input_matrix.in'}
-input_file_convol=${5:-'input_matrix_convolution.in'}
-build_type=${6:-'normal'}
+export PIN_ROOT=/home/other/CSE530-FA2022/pin-3.18-98332-gaebd7b1e6-gcc-linu
+
+input_file=${1:-'input_matrix.in'}
+input_file_convol=${2:-'input_matrix_convolution.in'}
+build_type=${3:-'normal'}
 
 if [[ $build_type = "clean" ]];
 then
@@ -47,7 +45,7 @@ do
   else
 	echo "Passing matrix in dense fmt"
   	echo "Running $kernelname on $input_file"
-    csrA="csrA_${input_file_conv  ol}"
+    csrA="csrA_${input_file_convol}"
     csrB="csrB_${input_file_convol}"
   	time $PIN_ROOT/pin -t $PIN_ROOT/source/tools/ManualExamples/obj-intel64/pinatrace.so -- $entry $csrA $csrB
   fi
@@ -55,4 +53,4 @@ do
   mv pinatrace.out traces/$filename  
 done
 
-source run_simulator.sh /home/mdl/azk6085/CSE530/CachePerformanceOnMatMul/traces
+bash run_simulator.sh ./traces
