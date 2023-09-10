@@ -37,8 +37,8 @@ def main():
     logger.setLevel(logging.INFO)
     
     logger.info('Loading config...')
-    config_file = open(arguments['config_file'])
-    configs = yaml.load(config_file)
+    with open('config_file.yaml', 'r') as config_file:
+        configs = yaml.load(config_file, Loader=yaml.FullLoader)
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
 
