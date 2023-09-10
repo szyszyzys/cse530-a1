@@ -27,32 +27,57 @@ Matrix generateRandomMatrix(int rows, int cols) {
 }
 
 
+//Matrix convolution(const Matrix &input, const Matrix &kernel) {
+//    int inputRows = input.size();
+//    int inputCols = input[0].size();
+//    int kernelRows = kernel.size();
+//    int kernelCols = kernel[0].size();
+//
+//    int outputRows = inputRows;
+//    int outputCols = inputCols;
+//    Matrix output(outputRows, std::vector<int>(outputCols, 0));
+//
+//    int padRow = kernelRows / 2;
+//    int padCol = kernelCols / 2;
+//
+//    for (int i = 0; i < outputRows; ++i) {
+//        for (int j = 0; j < outputCols; ++j) {
+//            int sum = 0;
+//            for (int m = -padRow; m <= padRow; ++m) {
+//                for (int n = -padCol; n <= padCol; ++n) {
+//                    if (i + m >= 0 && i + m < inputRows && j + n >= 0 && j + n < inputCols) {
+//                        sum += input[i + m][j + n] * kernel[padRow + m][padCol + n];
+//                    }
+//                }
+//            }
+//            output[i][j] = sum;
+//        }
+//    }
+//    return output;
+//}
+
 Matrix convolution(const Matrix &input, const Matrix &kernel) {
     int inputRows = input.size();
     int inputCols = input[0].size();
+
     int kernelRows = kernel.size();
     int kernelCols = kernel[0].size();
 
-    int outputRows = inputRows;
-    int outputCols = inputCols;
-    Matrix output(outputRows, std::vector<int>(outputCols, 0));
+    int outputRows = inputRows - kernelRows + 1;
+    int outputCols = inputCols - kernelCols + 1;
 
-    int padRow = kernelRows / 2;
-    int padCol = kernelCols / 2;
+    Matrix output(outputRows, std::vector<int>(outputCols, 0));
 
     for (int i = 0; i < outputRows; ++i) {
         for (int j = 0; j < outputCols; ++j) {
-            int sum = 0;
-            for (int m = -padRow; m <= padRow; ++m) {
-                for (int n = -padCol; n <= padCol; ++n) {
-                    if (i + m >= 0 && i + m < inputRows && j + n >= 0 && j + n < inputCols) {
-                        sum += input[i + m][j + n] * kernel[padRow + m][padCol + n];
-                    }
+            for (int m = 0; m < kernelRows; ++m) {
+                for (int n = 0; n < kernelCols; ++n) {
+                    output[i][j] += input[i + m][j + n] * kernel[m][n];
                 }
             }
-            output[i][j] = sum;
         }
     }
+
     return output;
 }
 
