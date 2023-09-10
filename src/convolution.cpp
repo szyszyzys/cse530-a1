@@ -1,5 +1,7 @@
+#include <iostream>
 #include <vector>
-
+#include <cstdlib> // for rand()
+#include <ctime> // for time()
 typedef std::vector<std::vector<int>> Matrix;
 
 void parsec_roi_begin()
@@ -12,70 +14,70 @@ void parsec_roi_end()
 
 }
 
-Matrix convolution(const Matrix &input, const Matrix &kernel) {
-    int irows = input.size();
-    int icols = input[0].size();
-    int krows = kernel.size();
-    int kcols = kernel[0].size();
 
-    // Output size
-    int orows = irows - krows + 1;
-    int ocols = icols - kcols + 1;
+typedef std::vector<std::vector<double>> Matrix;
 
-    Matrix output(orows, std::vector<int>(ocols, 0));
-
-    for (int i = 0; i < orows; ++i) {
-        for (int j = 0; j < ocols; ++j) {
-            for (int ki = 0; ki < krows; ++ki) {
-                for (int kj = 0; kj < kcols; ++kj) {
-                    output[i][j] += input[i + ki][j + kj] * kernel[ki][kj];
-                }
-            }
+Matrix generateRandomMatrix(int rows, int cols, double max_val = 1.0) {
+    Matrix mat(rows, std::vector<double>(cols));
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            mat[i][j] = ((double)rand() / RAND_MAX) * max_val;
         }
     }
+    return mat;
+}
 
+Matrix convolution(const Matrix &input, const Matrix &kernel) {
+    int inputRows = input.size();
+    int inputCols = input[0].size();
+    int kernelRows = kernel.size();
+    int kernelCols = kernel[0].size();
+
+    int outputRows = inputRows;
+    int outputCols = inputCols;
+    Matrix output(outputRows, std::vector<double>(outputCols, 0.0));
+
+    int padRow = kernelRows / 2;
+    int padCol = kernelCols / 2;
+
+    for (int i = 0; i < outputRows; ++i) {
+        for (int j = 0; j < outputCols; ++j) {
+            double sum = 0.0;
+            for (int m = -padRow; m <= padRow; ++m) {
+                for (int n = -padCol; n <= padCol; ++n) {
+                    if (i + m >= 0 && i + m < inputRows && j + n >= 0 && j + n < inputCols) {
+                        sum += input[i + m][j + n] * kernel[padRow + m][padCol + n];
+                    }
+                }
+            }
+            output[i][j] = sum;
+        }
+    }
     return output;
 }
 
-void read(string filename, Matrix &A, Matrix &B) {
-	string line;
-	ifstream infile;
-	infile.open (filename.c_str());
-	int i=0, j, a;
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <random_seed> <kernel_size>" << std::endl;
+        std::cerr << "Kernel size must be one of: 3, 5, 7" << std::endl;
+        return 1;
+    }
 
-	while (getline(infile, line) && !line.empty()) {
-		istringstream iss(line);
-		j = 0;
-		while (iss >> a) {
-			A(i,j) = a;
-			j++;
-		}
-		i++;
-	}
+    int seed = std::stoi(argv[1]); // Convert argument from string to int
+    int kernal_size=std::stoi(argv[2]);
+    srand(seed);
 
-	i = 0;
-	while (getline(infile, line)) {
-		istringstream iss(line);
-		j = 0;
-		while (iss >> a) {
-			B(i,j) = a;
-			j++;
-		}
-		i++;
-	}
+    // 256x256 input matrix initialized with random values between 0 and 1
+    Matrix input = generateRandomMatrix(256, 256);
 
-	infile.close();
-}
+    // 3x3 kernel with random values (you can replace this with a Gaussian kernel or other kernel values)
+    Matrix kernel = generateRandomMatrix(kernal_size, kernal_size);
 
-int main (int argc, char* argv[]) {
-	string filename;
-	filename = argv[2];
-    m_size = argv[3]
-    k_size = argv[4]
-	Matrix input(m_size, std::vector<int>(m_size, 0)), kernal(k_size, std::vector<int>(k_size, 0));
-	read (filename, input, kernal);
+    // Perform convolution
     parsec_roi_begin();
-	convolution(input, kernal);
+    Matrix output = convolution(input, kernel);
     parsec_roi_end();
-	return 0;
+
+
+    return 0;
 }

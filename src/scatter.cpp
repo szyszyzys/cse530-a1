@@ -16,58 +16,54 @@ void parsec_roi_end()
 
 }
 
-void scatter(Matrix &target, const Matrix &src, const Matrix &indices) {
-    int rows = indices.size();
-    int cols = indices[0].size();
+#include <iostream>
+#include <vector>
+#include <cstdlib> // for rand() and srand()
+#include <ctime> // for time()
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            int target_row = indices[i][j] / target[0].size();
-            int target_col = indices[i][j] % target[0].size();
-            target[target_row][target_col] = src[i][j];
-        }
+typedef std::vector<std::vector<int>> Matrix;
+
+// Function to scatter data into target matrix using indices
+void scatter(Matrix &target, const std::vector<std::pair<int, int>> &indices, const std::vector<int> &data) {
+    int n = indices.size();
+    for (int i = 0; i < n; ++i) {
+        int row = indices[i].first;
+        int col = indices[i].second;
+        target[row][col] = data[i];
     }
 }
 
-void read(string filename, Matrix &A, Matrix &B) {
-	string line;
-	ifstream infile;
-	infile.open (filename.c_str());
-	int i=0, j, a;
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <random_seed>" << std::endl;
+        return 1;
+    }
+    int seed = std::stoi(argv[1]); // Convert argument from string to int
+    srand(seed);
 
-	while (getline(infile, line) && !line.empty()) {
-		istringstream iss(line);
-		j = 0;
-		while (iss >> a) {
-			A(i,j) = a;
-			j++;
-		}
-		i++;
-	}
+    const int SIZE = 256;
+    const int SAMPLES = 1000;
 
-	i = 0;
-	while (getline(infile, line)) {
-		istringstream iss(line);
-		j = 0;
-		while (iss >> a) {
-			B(i,j) = a;
-			j++;
-		}
-		i++;
-	}
+    // Initialize matrix with zeros
+    Matrix mat(SIZE, std::vector<int>(SIZE, 0));
 
-	infile.close();
-}
+    // Generate 1000 random indices
+    std::vector<std::pair<int, int>> indices;
+    for (int i = 0; i < SAMPLES; ++i) {
+        int row = rand() % SIZE;
+        int col = rand() % SIZE;
+        indices.push_back({row, col});
+    }
 
-int main (int argc, char* argv[]) {
-	string filename;
-	filename = argv[2];
-    size = argv[3]
+    // Generate 1000 random data samples (for simplicity, values between 1 and 1000)
+    std::vector<int> data;
+    for (int i = 0; i < SAMPLES; ++i) {
+        data.push_back(1 + rand() % 1000); // Random value between 1 and 1000
+    }
 
-	Matrix source(size, std::vector<int>(size, 0)), indices(size, std::vector<int>(size, 0)), target(size, std::vector<int>(size, 0));
-	read (filename, source, indices);
-    parsec_roi_begin();
-	scatter(target, source, indices);
-    parsec_roi_end();
-	return 0;
+    // Scatter the data samples into the matrix
+    scatter(mat, indices, data);
+
+
+    return 0;
 }
