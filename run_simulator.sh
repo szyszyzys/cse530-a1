@@ -10,6 +10,6 @@ do
   echo $tracename	
   filename="${tracename}_stats.out"
   echo "Running $tracename on simulator"
-  time python ./Simulator/src/cache_simulator.py -pdc ../config/config_simple_multilevel -t $trace | tee stats.txt
+  time python ./Simulator/src/cache_simulator.py -pdc ./Simulator/config/config_simple_multilevel -t $trace | tee stats.txt
   mv ./Simulator/src/cache_simulator.log $filename
 done
