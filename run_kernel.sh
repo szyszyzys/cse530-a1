@@ -14,13 +14,13 @@ mkdir -p bin/
 mkdir -p traces/
 
 echo Compiling convolution
-g++ -Wall src/convolution.cpp -o bin/convolution.o
+g++ -std=c++11 -Wall src/convolution.cpp -o bin/convolution.o
 
 echo Compiling gather
-g++ -Wall src/gather.cpp -o bin/gather.o
+g++ -std=c++11 -Wall src/gather.cpp -o bin/gather.o
 
 echo Compiling scatter
-g++ -Wall src/scatter.cpp -o bin/scatter.o
+g++ -std=c++11 -Wall src/scatter.cpp -o bin/scatter.o
 
 for task in bin/*.o
 do
