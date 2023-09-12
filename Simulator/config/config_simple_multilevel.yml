@@ -7,7 +7,7 @@ architecture:
 
 cache_1: #required
   blocks: 16
-  associativity: 3
+  associativity: 4
   hit_time: 1 #cycles
 
 cache_2:
