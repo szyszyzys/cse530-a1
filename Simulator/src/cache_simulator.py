@@ -69,7 +69,7 @@ def main():
     trace = [item for item in trace if not (item.startswith('#') or item.startswith('Start') or item.startswith('End'))]
     logger.info('Loaded tracefile ' + arguments['trace_file'])
     logger.info('Begin simulation!')
-    simulate(hierarchy, trace, logger)
+    simulate(hierarchy, trace, logger, configs, arguments)
     if arguments['draw_cache']:
         for cache in hierarchy:
             if hierarchy[cache].next_level:
@@ -132,7 +132,7 @@ def print_cache(cache):
 
 # Loop through the instructions in the tracefile and use
 # the given memory hierarchy to find AMAT
-def simulate(hierarchy, trace, logger):
+def simulate(hierarchy, trace, logger, configs, args):
     responses = []
     # We only interface directly with L1. Reads and writes will automatically
     # interact with lower levels of the hierarchy
@@ -158,6 +158,11 @@ def simulate(hierarchy, trace, logger):
     logger.info('Simulation complete')
     analyze_results(hierarchy, responses, logger)
 
+    m = metrics_computation(hierarchy['cache_1'], responses)
+    with open(f'{args["trace_file"]}_simulation_output.txt', 'w') as file:
+        for key, value in m.items():
+            file.write(f"{key}: {value}\n")
+
 
 def analyze_results(hierarchy, responses, logger):
     # Parse all the responses from the simulation
@@ -170,9 +175,9 @@ def analyze_results(hierarchy, responses, logger):
     logger.info('\nTotal cycles taken: ' + str(total_time) + '\n')
 
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
-    m = metrics_computation(hierarchy['cache_1'], responses)
-    print(pprint.pformat(m))
+
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
+
 
 
 def compute_amat(level, responses, logger, results={}):
