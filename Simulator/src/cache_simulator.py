@@ -178,7 +178,6 @@ def analyze_results(hierarchy, responses, logger):
 def compute_amat(level, responses, logger, results={}):
     # Check if this is main memory
     # Main memory has a non-variable hit time
-    print('----------------------')
     if not level.next_level:
         results[level.name] = level.hit_time
     else:
@@ -212,9 +211,10 @@ def compute_amat(level, responses, logger, results={}):
     return results
 
 
-def metrics_computation(level, responses, results={}):
+def metrics_computation(level, responses):
     # Find out how many times this level of cache was accessed
     # And how many of those accesses were misses
+    results = {}
     if level.next_level:
         n_miss = 0
         n_access = 0
@@ -223,6 +223,11 @@ def metrics_computation(level, responses, results={}):
                 n_access += 1
                 if r.hit_list[level.name] == False:
                     n_miss += 1
+
+        if n_access > 0:
+            results[level.name] = metrics_computation(level.next_level, responses)[level.next_level.name]  # wat
+        else:
+            results[level.name] = metrics_computation(level.next_level, responses)[level.next_level.name]
 
         results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
     return results
