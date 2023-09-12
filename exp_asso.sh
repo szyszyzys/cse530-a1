@@ -4,22 +4,20 @@
 trace_file=${1:-'./traces/'}
 associativitys='1 2 4 8 16'
 
+f=$(echo "${trace_file##*/}");
+tracename=$(echo $f| cut  -d'.' -f 1);
+filename="${tracename}_as_stats.out"
 
+if [ -e "results/$filename" ]; then
+    rm "results/$filename"
+fi
 
-for trace in $trace_file
-do
-  for associativity in $associativitys
+for associativity in $associativitys
   do
     echo "current associativity $associativity" >> ./metrics.txt
     echo " " >> ./metrics.txt
-    f=$(echo "${trace##*/}");
-    tracename=$(echo $f| cut  -d'.' -f 1);
-    echo $tracename
-    filename="${tracename}_as_stats.out"
 
-    if [ -e "results/$filename" ]; then
-    rm "results/$filename"
-    fi
+    filename="${tracename}_as_stats.out"
 
     echo "Running $tracename on simulator"
     if [[ $filename == conv* ]]; then
@@ -27,8 +25,7 @@ do
     else
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
-    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -a $associativity | tee stats.txt
-    done
-done
+    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace_file -a $associativity | tee stats.txt
+  done
 
 mv ./metrics.txt results/$filename
