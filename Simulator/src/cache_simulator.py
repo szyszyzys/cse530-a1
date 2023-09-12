@@ -13,7 +13,6 @@ def main():
     parser.add_argument('-l', '--log-file', help='Log file name', required=False)
     parser.add_argument('-p', '--pretty', help='Use pretty colors', required=False, action='store_true')
     parser.add_argument('-d', '--draw-cache', help='Draw cache layouts', required=False, action='store_true')
-    parser.add_argument('-c', '--config-file', help='Configuration file for the memory heirarchy', required=True)
     parser.add_argument('--associativity', type=int, help='An integer input', default=-1)
     parser.add_argument('--blocks', type=int, help='An integer input', default=-1)
     parser.add_argument('--n-cache', type=int, help='An integer input', default=-1)
