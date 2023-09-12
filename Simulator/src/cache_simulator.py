@@ -57,7 +57,7 @@ def main():
     if arguments['n_cache'] != -1:
         for i in range(3, arguments['n_cache']):
             del configs[f'cache_{i}']
-    print(configs.keys)
+    print(configs.keys())
     return
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
