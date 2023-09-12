@@ -29,3 +29,5 @@ for associativity in $associativitys
   done
 
 mv ./metrics.txt results/$filename
+
+cat results/$filename  | grep -A 5 cache_1
