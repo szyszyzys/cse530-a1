@@ -180,12 +180,15 @@ def compute_amat(level, responses, logger, results={}):
                 level.next_level.name]  # wat
         else:
             results[level.name] = 0 * compute_amat(level.next_level, responses, logger)[
-                level.next_level.name]  # trust me, this is good
+                level.next_level.name]  # trust me, this Wis good
 
         logger.info(level.name)
         logger.info('\tNumber of accesses: ' + str(n_access))
         logger.info('\tNumber of hits: ' + str(n_access - n_miss))
         logger.info('\tNumber of misses: ' + str(n_miss))
+        logger.info(f'\tHit rate: {(n_access - n_miss)/n_access:.2f}')
+        logger.info(f'\tMiss rate: {(n_miss)/n_access:.2f}')
+
     return results
 
 

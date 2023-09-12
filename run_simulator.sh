@@ -3,7 +3,7 @@
 
 trace_file=${1:-'./traces/'}
 
-for trace in $trace_file/*.out
+for trace in $trace_file
 do
   f=$(echo "${trace##*/}");
   tracename=$(echo $f| cut  -d'.' -f 1);
