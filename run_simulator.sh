@@ -2,7 +2,7 @@
 # Run Simulator on input traces 
 
 trace_file=${1:-'./traces/'}
-associativitys='1 2'
+associativitys='1 2 3 4 5 6 7 8'
 
 if [ -e "results/$filename" ]; then
     rm "results/$filename"
