@@ -49,11 +49,12 @@ def main():
     # variate associativity of l1 cache
     if arguments['associativity'] != -1:
         configs['cache_1']['associativity'] = arguments['associativity']
-
     # variate # of blocks of l1 cache
     if arguments['blocks'] != -1:
         configs['cache_1']['blocks'] = arguments['blocks']
 
+    if configs['cache_1']['associativity'] > configs['cache_1']['blocks']:
+        return
     if arguments['n_cache'] != -1:
         for i in range(3, arguments['n_cache'], -1):
             del configs[f'cache_{i}']
