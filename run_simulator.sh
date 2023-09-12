@@ -23,8 +23,8 @@ do
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
     time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -a $associativity | tee stats.txt
-    echo "current associativity $associativity" > ./metrics.txt
-    echo " " > ./metrics.txt
+    echo "current associativity $associativity" >> ./metrics.txt
+    echo " " >> ./metrics.txt
     done
 done
 
