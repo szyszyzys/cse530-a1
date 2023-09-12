@@ -1,5 +1,5 @@
 #!/bin/sh
-# Run Simulator on input traces 
+# Run Simulator on input traces
 
 trace_file=${1:-'./traces/'}
 associativitys='1 2 3 4 5 6 7 8'
@@ -15,7 +15,7 @@ do
     f=$(echo "${trace##*/}");
     tracename=$(echo $f| cut  -d'.' -f 1);
     echo $tracename
-    filename="${tracename}_stats.out"
+    filename="${tracename}_as_stats.out"
 
     if [ -e "results/$filename" ]; then
     rm "results/$filename"

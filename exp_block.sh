@@ -1,21 +1,21 @@
 #!/bin/sh
-# Run Simulator on input traces 
+# Run Simulator on input traces
 
 trace_file=${1:-'./traces/'}
-associativitys='1 2 3 4 5 6 7 8'
+blocks='1 2 3 4 5 6 7 8'
 
 
 
 for trace in $trace_file
 do
-  for associativity in $associativitys
+  for block in $blocks
   do
-    echo "current associativity $associativity" >> ./metrics.txt
+    echo "current associativity $block" >> ./metrics.txt
     echo " " >> ./metrics.txt
     f=$(echo "${trace##*/}");
     tracename=$(echo $f| cut  -d'.' -f 1);
     echo $tracename
-    filename="${tracename}_stats.out"
+    filename="${tracename}_block_stats.out"
 
     if [ -e "results/$filename" ]; then
     rm "results/$filename"
@@ -27,7 +27,7 @@ do
     else
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
-    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -a $associativity | tee stats.txt
+    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t "$trace" -b "$block" | tee stats.txt
     done
 done
 
