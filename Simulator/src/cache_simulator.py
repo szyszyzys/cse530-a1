@@ -54,6 +54,7 @@ def main():
     if arguments['blocks'] != -1:
         configs['cache_1']['blocks'] = arguments['blocks']
 
+    print(arguments['n_cache'])
     if arguments['n_cache'] != -1:
         for i in range(3, arguments['n_cache']):
             del configs[f'cache_{i}']
