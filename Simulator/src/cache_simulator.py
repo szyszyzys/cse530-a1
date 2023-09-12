@@ -179,7 +179,7 @@ def analyze_results(hierarchy, responses, logger):
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
 
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
-    return amat
+    return pprint.pformat(amat)
 
 
 def compute_amat(level, responses, logger, results={}):

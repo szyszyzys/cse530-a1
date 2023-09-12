@@ -10,7 +10,7 @@ for trace in $trace_file
 do
   for he in $hes
   do
-    echo "current associativity $associativity" >> ./metrics.txt
+    echo "current depth $he" >> ./metrics.txt
     echo " " >> ./metrics.txt
     f=$(echo "${trace##*/}");
     tracename=$(echo $f| cut  -d'.' -f 1);
