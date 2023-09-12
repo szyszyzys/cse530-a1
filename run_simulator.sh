@@ -10,6 +10,11 @@ do
   echo $tracename	
   filename="${tracename}_stats.out"
   echo "Running $tracename on simulator"
-  time python ./Simulator/src/cache_simulator.py -pdc ./Simulator/config/config_simple_multilevel -t $trace | tee stats.txt
+  if [[ $filename == conv* ]]; then
+    config_file='./Simulator/config/config_conv.yml'
+  else
+    config_file='./Simulator/config/config_simple_multilevel.yml'
+  fi
+  time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace | tee stats.txt
   mv ./Simulator/src/cache_simulator.log $filename
 done
