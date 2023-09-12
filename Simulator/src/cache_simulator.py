@@ -171,7 +171,7 @@ def analyze_results(hierarchy, responses, logger):
 
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
     m = metrics_computation(hierarchy['cache_1'], responses)
-    pprint.pformat(m)
+    print(pprint.pformat(m))
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
 
 
@@ -223,7 +223,7 @@ def metrics_computation(level, responses, results={}):
                 if r.hit_list[level.name] == False:
                     n_miss += 1
 
-        results[level.name] = f'\n Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
+        results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
     return results
 
 
