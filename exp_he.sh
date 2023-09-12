@@ -28,7 +28,7 @@ do
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
     # shellcheck disable=SC2086
-    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -h "$he" | tee stats.txt
+    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -n "$he" | tee stats.txt
     done
 done
 
