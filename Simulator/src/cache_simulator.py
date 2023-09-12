@@ -56,7 +56,7 @@ def main():
 
     print(arguments['n_cache'])
     if arguments['n_cache'] != -1:
-        for i in range(3, arguments['n_cache']):
+        for i in range(3, arguments['n_cache'], -1):
             del configs[f'cache_{i}']
     print(configs.keys())
     return
