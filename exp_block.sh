@@ -2,7 +2,7 @@
 # Run Simulator on input traces
 
 trace_file=${1:-'./traces/'}
-blocks='1 2 4 8'
+blocks='2 4 8 16 32 64 128'
 
 
 
@@ -18,7 +18,7 @@ do
     filename="${tracename}_block_stats.out"
 
     if [ -e "results/$filename" ]; then
-    rm "results/$filename"
+        rm "results/$filename"
     fi
 
     echo "Running $tracename on simulator"

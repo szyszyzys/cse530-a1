@@ -2,7 +2,7 @@
 # Run Simulator on input traces
 
 trace_file=${1:-'./traces/'}
-associativitys='1 2 4 8'
+associativitys='1 2 4 8 16'
 
 
 
