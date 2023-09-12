@@ -39,5 +39,3 @@ do
   head -n 10 pinatrace.out
   mv pinatrace.out traces/$trace_name
 done
-
-bash run_simulator.sh ./traces

@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
     srand(seed);
 
     // 256x256 input matrix initialized with random values between 0 and 1
-    Matrix input = generateRandomMatrix(256, 256);
+    Matrix input = generateRandomMatrix(32, 32);
 
     // 3x3 kernel with random values (you can replace this with a Gaussian kernel or other kernel values)
     Matrix kernel = generateRandomMatrix(kernal_size, kernal_size);
