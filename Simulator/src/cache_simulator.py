@@ -223,8 +223,8 @@ def metrics_computation(level, responses):
                 n_access += 1
                 if r.hit_list[level.name] == False:
                     n_miss += 1
-        level = level.next_level
         results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
+        level = level.next_level
     return results
 
 
