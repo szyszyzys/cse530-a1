@@ -36,9 +36,9 @@ def main():
     sh.setFormatter(fh_format)
     logger.setLevel(logging.INFO)
 
-    logger.info(f'current trace: {arguments["trace-file"]}')
-    logger.info(f'Loading config {arguments["config-file"]}')
-    with open(arguments["config-file"], 'r') as config_file:
+    logger.info(f'current trace: {arguments["trace_file"]}')
+    logger.info(f'Loading config {arguments["config_file"]}')
+    with open(arguments["config_file"], 'r') as config_file:
         configs = yaml.load(config_file, Loader=yaml.FullLoader)
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
