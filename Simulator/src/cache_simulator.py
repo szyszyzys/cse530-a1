@@ -215,7 +215,7 @@ def metrics_computation(level, responses):
     # Find out how many times this level of cache was accessed
     # And how many of those accesses were misses
     results = {}
-    if level.next_level:
+    while level.next_level:
         n_miss = 0
         n_access = 0
         for r in responses:
@@ -223,12 +223,7 @@ def metrics_computation(level, responses):
                 n_access += 1
                 if r.hit_list[level.name] == False:
                     n_miss += 1
-
-        if n_access > 0:
-            results[level.name] = metrics_computation(level.next_level, responses)
-        else:
-            results[level.name] = metrics_computation(level.next_level, responses)
-
+        level = level.next_level
         results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
     return results
 
