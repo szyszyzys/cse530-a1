@@ -18,7 +18,8 @@ do
     else
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
-    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace --associativity $associativity | tee stats.txt
-    mv ./cache_simulator.log $filename
+    time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace -a $associativity | tee stats.txt
     done
 done
+
+mv ./metrics.txt results/$filename

@@ -13,9 +13,9 @@ def main():
     parser.add_argument('-l', '--log-file', help='Log file name', required=False)
     parser.add_argument('-p', '--pretty', help='Use pretty colors', required=False, action='store_true')
     parser.add_argument('-d', '--draw-cache', help='Draw cache layouts', required=False, action='store_true')
-    parser.add_argument('--associativity', type=int, help='An integer input', default=-1)
-    parser.add_argument('--blocks', type=int, help='An integer input', default=-1)
-    parser.add_argument('--n-cache', type=int, help='An integer input', default=-1)
+    parser.add_argument('-a', '--associativity', type=int, help='An integer input', default=-1)
+    parser.add_argument('-b', '--blocks', type=int, help='An integer input', default=-1)
+    parser.add_argument('-n', '--n-cache', type=int, help='An integer input', default=-1)
 
     arguments = vars(parser.parse_args())
 
@@ -159,7 +159,8 @@ def simulate(hierarchy, trace, logger, configs, args):
     analyze_results(hierarchy, responses, logger)
 
     m = metrics_computation(hierarchy['cache_1'], responses)
-    with open(f'{args["trace_file"]}_simulation_output.txt', 'w') as file:
+    print(m)
+    with open(f'metrics.txt', 'a') as file:
         for key, value in m.items():
             file.write(f"{key}: {value}\n")
 
