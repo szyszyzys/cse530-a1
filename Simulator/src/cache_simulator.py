@@ -155,10 +155,11 @@ def simulate(hierarchy, trace, logger, configs, args):
         else:
             raise InvalidOpError
     logger.info('Simulation complete')
-    analyze_results(hierarchy, responses, logger)
+    amat = analyze_results(hierarchy, responses, logger)
 
     m = metrics_computation(hierarchy['cache_1'], responses)
     print(m)
+    m['AMAT'] = amat
     with open(f'metrics.txt', 'a') as file:
         for key, value in m.items():
             file.write(f"{key}: {value}\n")
@@ -177,7 +178,7 @@ def analyze_results(hierarchy, responses, logger):
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
 
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
-
+    return amat
 
 
 def compute_amat(level, responses, logger, results={}):
@@ -228,7 +229,8 @@ def metrics_computation(level, responses):
                 n_access += 1
                 if r.hit_list[level.name] == False:
                     n_miss += 1
-        results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
+        results[
+            level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
         level = level.next_level
     return results
 
