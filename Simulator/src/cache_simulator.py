@@ -178,6 +178,7 @@ def analyze_results(hierarchy, responses, logger):
 def compute_amat(level, responses, logger, results={}):
     # Check if this is main memory
     # Main memory has a non-variable hit time
+    print('----------------------')
     if not level.next_level:
         results[level.name] = level.hit_time
     else:
