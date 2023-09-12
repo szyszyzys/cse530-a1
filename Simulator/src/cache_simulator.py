@@ -171,7 +171,7 @@ def analyze_results(hierarchy, responses, logger):
 
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
     m = metrics_computation(hierarchy['cache_1'], responses)
-    print(m)
+    pprint.pformat(m)
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
 
 
@@ -211,10 +211,9 @@ def compute_amat(level, responses, logger, results={}):
     return results
 
 
-def metrics_computation(level, responses):
+def metrics_computation(level, responses, results={}):
     # Find out how many times this level of cache was accessed
     # And how many of those accesses were misses
-    results = {}
     if level.next_level:
         n_miss = 0
         n_access = 0
