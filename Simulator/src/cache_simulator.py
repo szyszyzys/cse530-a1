@@ -225,9 +225,9 @@ def metrics_computation(level, responses):
                     n_miss += 1
 
         if n_access > 0:
-            results[level.name] = metrics_computation(level.next_level, responses)[level.next_level.name]  # wat
+            results[level.name] = metrics_computation(level.next_level, responses)
         else:
-            results[level.name] = metrics_computation(level.next_level, responses)[level.next_level.name]
+            results[level.name] = metrics_computation(level.next_level, responses)
 
         results[level.name] = f'Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
     return results
