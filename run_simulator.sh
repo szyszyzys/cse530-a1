@@ -16,5 +16,5 @@ do
     config_file='./Simulator/config/config_simple_multilevel.yml'
   fi
   time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace | tee stats.txt
-  mv ./Simulator/src/cache_simulator.log $filename
+  mv ./cache_simulator.log $filename
 done
