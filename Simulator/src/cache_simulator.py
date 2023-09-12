@@ -13,6 +13,11 @@ def main():
     parser.add_argument('-l', '--log-file', help='Log file name', required=False)
     parser.add_argument('-p', '--pretty', help='Use pretty colors', required=False, action='store_true')
     parser.add_argument('-d', '--draw-cache', help='Draw cache layouts', required=False, action='store_true')
+    parser.add_argument('-c', '--config-file', help='Configuration file for the memory heirarchy', required=True)
+    parser.add_argument('--associativity', type=int, help='An integer input', default=-1)
+    parser.add_argument('--blocks', type=int, help='An integer input', default=-1)
+    parser.add_argument('--n-cache', type=int, help='An integer input', default=-1)
+
     arguments = vars(parser.parse_args())
 
     if arguments['pretty']:
@@ -41,6 +46,19 @@ def main():
     logger.info(f'Loading config {arguments["config_file"]}')
     with open(arguments["config_file"], 'r') as config_file:
         configs = yaml.load(config_file, Loader=yaml.FullLoader)
+
+    # variate associativity of l1 cache
+    if arguments['associativity'] != -1:
+        configs['cache_1']['associativity'] = arguments['associativity']
+
+    # variate # of blocks of l1 cache
+    if arguments['blocks'] != -1:
+        configs['cache_1']['blocks'] = arguments['blocks']
+
+    if arguments['n_cache'] != -1:
+        for i in range(3, arguments['n_cache']):
+            del configs[f'cache_{i}']
+
     hierarchy = build_hierarchy(configs, logger)
     logger.info('Memory hierarchy built.')
 
@@ -153,6 +171,8 @@ def analyze_results(hierarchy, responses, logger):
     logger.info('\nTotal cycles taken: ' + str(total_time) + '\n')
 
     amat = compute_amat(hierarchy['cache_1'], responses, logger)
+    m = metrics_computation(hierarchy['cache_1'], responses)
+    print(m)
     logger.info('\nAMATs:\n' + pprint.pformat(amat))
 
 
@@ -186,9 +206,26 @@ def compute_amat(level, responses, logger, results={}):
         logger.info('\tNumber of accesses: ' + str(n_access))
         logger.info('\tNumber of hits: ' + str(n_access - n_miss))
         logger.info('\tNumber of misses: ' + str(n_miss))
-        logger.info(f'\tHit rate: {(n_access - n_miss)/n_access:.2f}')
-        logger.info(f'\tMiss rate: {(n_miss)/n_access:.2f}')
+        logger.info(f'\tHit rate: {(n_access - n_miss) / n_access:.2f}')
+        logger.info(f'\tMiss rate: {(n_miss) / n_access:.2f}')
 
+    return results
+
+
+def metrics_computation(level, responses):
+    # Find out how many times this level of cache was accessed
+    # And how many of those accesses were misses
+    results = {}
+    if level.next_level:
+        n_miss = 0
+        n_access = 0
+        for r in responses:
+            if level.name in list(r.hit_list.keys()):
+                n_access += 1
+                if r.hit_list[level.name] == False:
+                    n_miss += 1
+
+        results[level.name] = f'\n Number of accesses: {n_access} \n' + f'Number of hits: {n_access - n_miss} \n' + f'Number of misses {n_miss} \n' + f'Hit rate: {(n_access - n_miss) / n_access:.2f} \n' + f'Miss rate: {(n_miss) / n_access:.2f} \n'
     return results
 
 

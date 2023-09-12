@@ -36,11 +36,11 @@ int main(int argc, char* argv[]) {
     const int SIZE = 256;
     const int SAMPLES = 1000;
 
-    // Initialize matrix with random values for demonstration purposes (values between 1 and 10000)
+    // Initialize matrix with random values for demonstration purposes (values between 1 and 1000)
     Matrix mat(SIZE, std::vector<int>(SIZE));
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            mat[i][j] = 1 + rand() % 10000;
+            mat[i][j] = 1 + rand() % 1000;
         }
     }
 
