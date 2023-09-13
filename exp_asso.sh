@@ -26,8 +26,10 @@ for associativity in $associativitys
       config_file='./Simulator/config/config_simple_multilevel.yml'
     fi
     time python ./Simulator/src/cache_simulator.py -pdc $config_file -t $trace_file -a $associativity | tee stats.txt
+
   done
 
+mv cache_simulator.log simulator_log/$filename
 mv ./metrics.txt results/$filename
 
 cat results/$filename  | grep -A 5 cache_1
