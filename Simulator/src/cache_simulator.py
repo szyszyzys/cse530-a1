@@ -73,7 +73,9 @@ def main():
     if arguments['draw_cache']:
         for cache in hierarchy:
             if hierarchy[cache].next_level:
-                print_cache(hierarchy[cache])
+                table = print_cache(hierarchy[cache])
+                logger.info("print table")
+                logger.info(table.table)
 
 
 # Print the contents of a cache as a table
@@ -128,6 +130,7 @@ def print_cache(cache):
         table.inner_row_border = True
         print("\n")
         print(table.table)
+        return table
 
 
 # Loop through the instructions in the tracefile and use
@@ -157,10 +160,14 @@ def simulate(hierarchy, trace, logger, configs, args):
             raise InvalidOpError
     logger.info('Simulation complete')
     amat = analyze_results(hierarchy, responses, logger)
-
     m = metrics_computation(hierarchy['cache_1'], responses)
     print(m)
     m['AMAT'] = amat
+    for cache in hierarchy:
+        if hierarchy[cache].next_level:
+            table = print_cache(hierarchy[cache])
+            m['table'] = table.table
+
     with open(f'metrics.txt', 'a') as file:
         for key, value in m.items():
             file.write(f"{key}: {value}\n")
